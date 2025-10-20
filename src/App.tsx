@@ -3,10 +3,13 @@ import { Sprout, Sparkles, Info } from 'lucide-react';
 import { InputForm } from './components/InputForm';
 import { RecommendationCard } from './components/RecommendationCard';
 import { MarketInsights } from './components/MarketInsights';
+import { LanguageSelector } from './components/LanguageSelector';
 import { supabase, RecommendationInput, RecommendedCrop } from './lib/supabase';
 import { calculateRecommendations } from './utils/recommendationEngine';
+import { useLanguage } from './context/LanguageContext';
 
 function App() {
+  const { t } = useLanguage();
   const [recommendations, setRecommendations] = useState<RecommendedCrop[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -53,20 +56,23 @@ function App() {
     <div className="min-h-screen bg-gradient-to-br from-green-50 via-blue-50 to-green-50">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <header className="text-center mb-12">
+          <div className="flex justify-end mb-4">
+            <LanguageSelector />
+          </div>
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="bg-green-600 p-3 rounded-2xl shadow-lg">
               <Sprout className="w-10 h-10 text-white" />
             </div>
             <h1 className="text-5xl font-bold bg-gradient-to-r from-green-700 to-green-900 bg-clip-text text-transparent">
-              CropAdvisor
+              {t('app.title')}
             </h1>
           </div>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            AI-powered crop recommendations based on your soil, climate, and market trends
+            {t('app.subtitle')}
           </p>
           <div className="flex items-center justify-center gap-2 mt-4 text-sm text-gray-500">
             <Sparkles className="w-4 h-4" />
-            <span>Smart farming decisions for maximum yield and profit</span>
+            <span>{t('app.tagline')}</span>
           </div>
         </header>
 
@@ -84,7 +90,7 @@ function App() {
             <div className="flex items-start gap-3">
               <Info className="w-5 h-5 text-red-600 mt-0.5" />
               <div>
-                <h3 className="font-semibold text-red-800">Error</h3>
+                <h3 className="font-semibold text-red-800">{t('error')}</h3>
                 <p className="text-red-600">{error}</p>
               </div>
             </div>
@@ -96,7 +102,7 @@ function App() {
             <div className="flex items-center gap-3 mb-6">
               <Sparkles className="w-6 h-6 text-green-600" />
               <h2 className="text-3xl font-bold text-gray-800">
-                Recommended Crops for Your Farm
+                {t('recommendations.title')}
               </h2>
             </div>
             <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
@@ -116,12 +122,10 @@ function App() {
             <div className="bg-white rounded-2xl shadow-lg p-12 max-w-2xl mx-auto">
               <Sprout className="w-20 h-20 text-green-600 mx-auto mb-6" />
               <h3 className="text-2xl font-bold text-gray-800 mb-4">
-                Get Started with Smart Crop Planning
+                {t('empty.title')}
               </h3>
               <p className="text-gray-600 leading-relaxed">
-                Enter your farm details above to receive personalized crop recommendations.
-                Our AI analyzes soil type, climate conditions, rainfall patterns, and current
-                market trends to suggest the most profitable crops for your land.
+                {t('empty.description')}
               </p>
             </div>
           </div>
@@ -129,8 +133,8 @@ function App() {
 
         <footer className="mt-16 text-center text-gray-500 text-sm">
           <div className="border-t pt-8">
-            <p>Powered by advanced agricultural data and market analytics</p>
-            <p className="mt-2">Helping farmers make data-driven decisions</p>
+            <p>{t('footer.powered')}</p>
+            <p className="mt-2">{t('footer.helping')}</p>
           </div>
         </footer>
       </div>

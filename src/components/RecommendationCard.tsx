@@ -1,5 +1,6 @@
 import { TrendingUp, DollarSign, Sprout, Calendar, CheckCircle } from 'lucide-react';
 import { RecommendedCrop } from '../lib/supabase';
+import { useLanguage } from '../context/LanguageContext';
 
 interface RecommendationCardProps {
   crop: RecommendedCrop;
@@ -19,6 +20,7 @@ const DEMAND_ICONS = {
 };
 
 export function RecommendationCard({ crop, rank }: RecommendationCardProps) {
+  const { t } = useLanguage();
   const demandColor = DEMAND_COLORS[crop.demand_level as keyof typeof DEMAND_COLORS] || DEMAND_COLORS.medium;
   const demandIcon = DEMAND_ICONS[crop.demand_level as keyof typeof DEMAND_ICONS] || DEMAND_ICONS.medium;
 
@@ -35,7 +37,7 @@ export function RecommendationCard({ crop, rank }: RecommendationCardProps) {
           </div>
           <div className="bg-white rounded-full px-4 py-2">
             <div className="text-2xl font-bold text-green-600">{Math.round(crop.score)}%</div>
-            <div className="text-xs text-gray-600">Match</div>
+            <div className="text-xs text-gray-600">{t('recommendations.match')}</div>
           </div>
         </div>
       </div>
@@ -47,7 +49,7 @@ export function RecommendationCard({ crop, rank }: RecommendationCardProps) {
           <div className="bg-gray-50 rounded-lg p-3">
             <div className="flex items-center gap-2 text-gray-700 mb-1">
               <DollarSign className="w-4 h-4" />
-              <span className="text-sm font-semibold">Market Price</span>
+              <span className="text-sm font-semibold">{t('recommendations.marketPrice')}</span>
             </div>
             <div className="text-xl font-bold text-gray-900">₹{crop.market_price}/kg</div>
           </div>
@@ -55,18 +57,18 @@ export function RecommendationCard({ crop, rank }: RecommendationCardProps) {
           <div className={`rounded-lg p-3 ${demandColor}`}>
             <div className="flex items-center gap-2 mb-1">
               <TrendingUp className="w-4 h-4" />
-              <span className="text-sm font-semibold">Market Demand</span>
+              <span className="text-sm font-semibold">{t('recommendations.marketDemand')}</span>
             </div>
             <div className="text-xl font-bold flex items-center gap-2">
               <span>{demandIcon}</span>
-              <span className="capitalize">{crop.demand_level}</span>
+              <span className="capitalize">{t(`recommendations.demand.${crop.demand_level}`)}</span>
             </div>
           </div>
 
           <div className="bg-blue-50 rounded-lg p-3">
             <div className="flex items-center gap-2 text-blue-700 mb-1">
               <Calendar className="w-4 h-4" />
-              <span className="text-sm font-semibold">Season</span>
+              <span className="text-sm font-semibold">{t('recommendations.season')}</span>
             </div>
             <div className="text-lg font-bold text-blue-900">{crop.growing_season}</div>
           </div>
@@ -74,16 +76,16 @@ export function RecommendationCard({ crop, rank }: RecommendationCardProps) {
           <div className="bg-green-50 rounded-lg p-3">
             <div className="flex items-center gap-2 text-green-700 mb-1">
               <Sprout className="w-4 h-4" />
-              <span className="text-sm font-semibold">Compatibility</span>
+              <span className="text-sm font-semibold">{t('recommendations.compatibility')}</span>
             </div>
-            <div className="text-lg font-bold text-green-900">Excellent</div>
+            <div className="text-lg font-bold text-green-900">{t('recommendations.excellent')}</div>
           </div>
         </div>
 
         <div className="border-t pt-4">
           <h4 className="text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-green-600" />
-            Why This Crop?
+            {t('recommendations.whyThisCrop')}
           </h4>
           <ul className="space-y-1">
             {crop.reasons.map((reason, idx) => (
